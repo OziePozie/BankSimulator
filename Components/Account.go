@@ -16,6 +16,8 @@ type Account struct {
 	Bill       []Bill `json:"bills"`
 }
 
+var filename = "users.json"
+
 func (account Account) createAccount(login, password, firstName, secondName string) Account {
 
 	account.FirstName = firstName
@@ -36,8 +38,20 @@ func (Account) deleteAccount(login string) bool {
 	return true
 }
 
-func (account Account) updateAccount() {
-	account.CreateBill()
+func (account Account) updateAccount(login string) {
+	accounts := getAccountsFromDataBase()
+	for i, acc := range accounts {
+		if login == acc.Login {
+			account = acc
+			accounts = append(accounts[:i], accounts[i+1:]...)
+		}
+	}
+
+	_, err := json.Marshal(account)
+	if err != nil {
+		return
+	}
+
 }
 
 func openDataBase() {
@@ -48,29 +62,25 @@ func createDateBase() {
 
 }
 
-func getAccountsFromDataBase() ([]Account, *os.File, error) {
-	filename := "users.json"
-
+func getAccountsFromDataBase() []Account {
 	var accounts []Account
-
 	file, err := os.Open(filename)
-
 	if errors.Is(err, os.ErrNotExist) {
 		file, err = os.Create(filename)
 	}
 	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-
-	err = decoder.Decode(&accounts)
-
-	return accounts, file, err
+	b, _ := os.ReadFile(filename)
+	err = json.Unmarshal(b, &accounts)
+	if err != nil {
+		return nil
+	}
+	return accounts
 }
 
 func getAccountByLogin(login string) Account {
 	var account Account
 
-	accounts, _, _ := getAccountsFromDataBase()
+	accounts := getAccountsFromDataBase()
 
 	for _, acc := range accounts {
 		if acc.Login == login {
@@ -83,14 +93,26 @@ func getAccountByLogin(login string) Account {
 
 func saveAccountToFile(account Account) {
 
-	accounts, file, err := getAccountsFromDataBase()
+	accounts := getAccountsFromDataBase()
 
-	accounts = append(accounts, account)
+	flag := false
 
-	file, _ = os.OpenFile("users.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	for i, a := range accounts {
+		if a.Login == account.Login {
+			accounts[i] = account
+			flag = true
+			fmt.Println(a)
+			break
+		}
+	}
+	if !flag {
+		accounts = append(accounts, account)
+	}
 
+	file, _ := os.OpenFile("users.json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	fmt.Println(accounts)
 	encoder := json.NewEncoder(file)
-	err = encoder.Encode(accounts)
+	err := encoder.Encode(accounts)
 
 	if err != nil {
 		fmt.Println("Ошибка при сохранении данных в файл:", err)

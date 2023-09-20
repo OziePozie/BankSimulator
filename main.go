@@ -21,5 +21,5 @@ func main() {
 	password := scanner.Text()
 	account, _ := Components.AuthAccount(login, password)
 
-	account.CreateBill()
+	account = account.CreateBill()
 }
