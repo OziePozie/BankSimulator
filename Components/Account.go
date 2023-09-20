@@ -42,8 +42,8 @@ func (account Account) updateAccount(login string) {
 	accounts := getAccountsFromDataBase()
 	for i, acc := range accounts {
 		if login == acc.Login {
-			account = acc
-			accounts = append(accounts[:i], accounts[i+1:]...)
+			accounts[i] = acc
+
 		}
 	}
 
