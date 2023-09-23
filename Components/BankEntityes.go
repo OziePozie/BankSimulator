@@ -3,6 +3,7 @@ package Components
 import (
 	"github.com/google/uuid"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -45,20 +46,23 @@ func (account Account) CreateBill() Account {
 
 	bills = append(bills, bill)
 
+	account.Bill = bills
+
 	saveAccountToFile(account)
 
 	return account
 }
 
 func (bill Bill) CreateCard() Card {
-
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
 	var number string
 	for i := 0; i < 16; i++ {
-		number += string(rand.Intn(10))
+		number += strconv.Itoa(r.Intn(10))
 	}
 	var cvv string
 	for i := 0; i < 3; i++ {
-		cvv += string(rand.Intn(10))
+		cvv += strconv.Itoa(r.Intn(10))
 	}
 	card := Card{
 		Number:         number,
