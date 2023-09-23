@@ -34,7 +34,21 @@ func (account Account) createAccount(login, password, firstName, secondName stri
 }
 
 func (Account) deleteAccount(login string) bool {
+	var res string
+	accounts := getAccountsFromDataBase()
+	for i, acc := range accounts {
+		if login == acc.Login {
+			accounts = append(accounts[:i], accounts[i+1:]...)
 
+		}
+	}
+
+	for _, account := range accounts {
+		res += account.serialize()
+	}
+	file, _ := os.Open("users.json")
+
+	file.WriteString(res)
 	return true
 }
 
@@ -54,8 +68,14 @@ func (account Account) updateAccount(login string) {
 
 }
 
-func openDataBase() {
-
+func getBytesDataBase() []byte {
+	file, err := os.Open(filename)
+	if errors.Is(err, os.ErrNotExist) {
+		file, err = os.Create(filename)
+	}
+	b, _ := os.ReadFile(filename)
+	defer file.Close()
+	return b
 }
 
 func createDateBase() {
@@ -64,13 +84,8 @@ func createDateBase() {
 
 func getAccountsFromDataBase() []Account {
 	var accounts []Account
-	file, err := os.Open(filename)
-	if errors.Is(err, os.ErrNotExist) {
-		file, err = os.Create(filename)
-	}
-	defer file.Close()
-	b, _ := os.ReadFile(filename)
-	err = json.Unmarshal(b, &accounts)
+
+	err := json.Unmarshal(getBytesDataBase(), &accounts)
 	if err != nil {
 		return nil
 	}
@@ -154,4 +169,18 @@ func AuthAccount(login, password string) (Account, error) {
 		panic("Неправильные креды")
 
 	}
+}
+
+func (account Account) deserialiaze() Account {
+	b, _ := os.ReadFile(filename)
+	_ = json.Unmarshal(b, &account)
+	return account
+}
+
+func (account Account) serialize() string {
+	b, err := json.Marshal(account)
+	if err != nil {
+
+	}
+	return string(b)
 }
