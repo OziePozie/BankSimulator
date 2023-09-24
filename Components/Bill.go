@@ -9,40 +9,30 @@ import (
 
 type Bill struct {
 	Number       uuid.UUID `json:"number"`
-	Balance      float64   `json:"balance"`
+	Balance      Balance   `json:"balance"`
 	Cards        []Card    `json:"cards"`
-	History      History   `json:"history"`
+	History      []History `json:"history"`
+	Limit        int       `json:"limit"`
 	IsBillActive bool      `json:"isBillActive"`
-}
-
-type Card struct {
-	Number         string    `json:"number"`
-	Cvv            string    `json:"cvv"`
-	ExpirationDate time.Time `json:"expirationDate"`
-	Balance        float64   `json:"balance"`
-	History        History   `json:"history"`
-	IsCardActive   bool      `json:"isCardActive"`
-}
-
-type History struct {
-	Date          time.Time `json:"date"`
-	Destination   string    `json:"destination"`
-	OperationType string    `json:"operationType"`
-	Sum           float64   `json:"sum"`
 }
 
 func (account Account) CreateBill() Account {
 	bills := account.Bill
 
 	bill := Bill{
-		Number:       uuid.UUID{},
-		Balance:      0,
+		Number: uuid.UUID{},
+		Balance: Balance{
+			Dollars: 0,
+			Euros:   0,
+			Rubles:  0,
+		},
 		Cards:        nil,
-		History:      History{},
+		History:      nil,
+		Limit:        0,
 		IsBillActive: true,
 	}
-	card := bill.CreateCard()
-	bill.Cards = append(bill.Cards, card)
+	//card := bill.CreateCard()
+	//bill.Cards = append(bill.Cards, card)
 
 	bills = append(bills, bill)
 
@@ -68,9 +58,13 @@ func (bill Bill) CreateCard() Card {
 		Number:         number,
 		Cvv:            cvv,
 		ExpirationDate: time.Now().AddDate(4, 0, 0),
-		Balance:        0,
-		History:        History{},
-		IsCardActive:   false,
+		Balance: Balance{
+			Dollars: 0,
+			Euros:   0,
+			Rubles:  0,
+		},
+		History:      History{},
+		IsCardActive: true,
 	}
 
 	return card
@@ -80,4 +74,29 @@ func (bill Bill) getCards() []Card {
 	cards := bill.Cards
 
 	return cards
+}
+
+func (bill Bill) closeBill() Bill {
+	bill.IsBillActive = false
+
+	return bill
+}
+
+func (bill Bill) setLimit(limit int) Bill {
+	bill.Limit = limit
+	return bill
+}
+
+func (bill Bill) addHistory(history History) Bill {
+
+	bill.History = append(bill.History, history)
+
+	return bill
+
+}
+
+func (bill Bill) getBalance() Balance {
+
+	return bill.Balance
+
 }
