@@ -44,7 +44,7 @@ func (Account) deleteAccount(login string) bool {
 	}
 
 	for _, account := range accounts {
-		res += account.serialize()
+		res += account.StructToJSON()
 	}
 	file, _ := os.Open("users.json")
 
@@ -63,7 +63,7 @@ func (account Account) updateAccount(login string) {
 
 	_, err := json.Marshal(account)
 	if err != nil {
-		return
+		fmt.Println("Произошел Обкак")
 	}
 
 }
@@ -85,7 +85,7 @@ func createDateBase() {
 func getAccountsFromDataBase() []Account {
 	var accounts []Account
 
-	err := json.Unmarshal(getBytesDataBase(), &accounts)
+	err := json.Unmarshal(getBytesDataBase(), &accounts) //!!!!
 	if err != nil {
 		return nil
 	}
@@ -171,13 +171,13 @@ func AuthAccount(login, password string) (Account, error) {
 	}
 }
 
-func (account Account) deserialiaze() Account {
+func (account Account) JSONToStruct() Account {
 	b, _ := os.ReadFile(filename)
 	_ = json.Unmarshal(b, &account)
 	return account
 }
 
-func (account Account) serialize() string {
+func (account Account) StructToJSON() string {
 	b, err := json.Marshal(account)
 	if err != nil {
 
