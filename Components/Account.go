@@ -92,7 +92,7 @@ func getAccountsFromDataBase() []Account {
 	return accounts
 }
 
-func getAccountByLogin(login string) Account {
+func GetAccountByLogin(login string) Account {
 	var account Account
 
 	accounts := getAccountsFromDataBase()
@@ -161,7 +161,7 @@ func RegisterAccount(scanner *bufio.Scanner) {
 }
 
 func AuthAccount(login, password string) (Account, error) {
-	account := getAccountByLogin(login)
+	account := GetAccountByLogin(login)
 	if account.Password == password {
 		return account, nil
 	} else {

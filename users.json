@@ -1,95 +1,9 @@
 [
   {
-    "first_name": "timur",
-    "second_name": "123",
-    "login": "tim",
-    "password": "123",
+    "first_name": "tim",
+    "second_name": "sada",
+    "login": "tiem",
+    "password": "1321",
     "bills": null
-  },
-  {
-    "first_name": "dsf",
-    "second_name": "123",
-    "login": "dsd",
-    "password": "123",
-    "bills": [
-      {
-        "number": "00000000-0000-0000-0000-000000000000",
-        "balance": 0,
-        "cards": [
-          {
-            "number": "7370204481764028",
-            "cvv": "058",
-            "expirationDate": "2027-09-20T03:22:07.4816968+03:00",
-            "balance": 0,
-            "history": {
-              "date": "0001-01-01T00:00:00Z",
-              "destination": "",
-              "operationType": "",
-              "sum": 0
-            },
-            "isCardActive": false
-          }
-        ],
-        "history": {
-          "date": "0001-01-01T00:00:00Z",
-          "destination": "",
-          "operationType": "",
-          "sum": 0
-        },
-        "isBillActive": true
-      },
-      {
-        "number": "00000000-0000-0000-0000-000000000000",
-        "balance": 0,
-        "cards": [
-          {
-            "number": "2958228613893418",
-            "cvv": "716",
-            "expirationDate": "2027-09-20T03:25:33.7911428+03:00",
-            "balance": 0,
-            "history": {
-              "date": "0001-01-01T00:00:00Z",
-              "destination": "",
-              "operationType": "",
-              "sum": 0
-            },
-            "isCardActive": false
-          }
-        ],
-        "history": {
-          "date": "0001-01-01T00:00:00Z",
-          "destination": "",
-          "operationType": "",
-          "sum": 0
-        },
-        "isBillActive": true
-      },
-      {
-        "number": "00000000-0000-0000-0000-000000000000",
-        "balance": 0,
-        "cards": [
-          {
-            "number": "6572013596074367",
-            "cvv": "494",
-            "expirationDate": "2027-09-20T18:35:49.6755267+03:00",
-            "balance": 0,
-            "history": {
-              "date": "0001-01-01T00:00:00Z",
-              "destination": "",
-              "operationType": "",
-              "sum": 0
-            },
-            "isCardActive": false
-          }
-        ],
-        "history": {
-          "date": "0001-01-01T00:00:00Z",
-          "destination": "",
-          "operationType": "",
-          "sum": 0
-        },
-        "isBillActive": true
-      }
-    ]
   }
 ]

@@ -9,7 +9,7 @@ type Card struct {
 	Cvv            string    `json:"cvv"`
 	ExpirationDate time.Time `json:"expirationDate"`
 	Balance        Balance   `json:"balance"`
-	History        History   `json:"history"`
+	History        []History `json:"history"`
 	IsCardActive   bool      `json:"isCardActive"`
 }
 
@@ -35,4 +35,24 @@ func (bill Bill) getCard(id string) *Card {
 	}
 
 	return nil
+}
+
+func (card Card) transferToCard(currency string, sum float64, login string) bool {
+	userToTransfer := GetAccountByLogin(login)
+	billToTransfer := userToTransfer.Bill
+	cardToTransfer := billToTransfer[0].Cards[0]
+	switch currency {
+	case "RUB":
+		cardToTransfer.Balance.Rubles += sum
+		card.Balance.Rubles -= sum
+	case "DOL":
+		cardToTransfer.Balance.Dollars += sum
+		card.Balance.Dollars -= sum
+	case "EU":
+		cardToTransfer.Balance.Euros += sum
+		card.Balance.Euros -= sum
+	}
+	card.History = append(card.History, createHistoryField(cardToTransfer.Number, "transfer", sum))
+
+	return true
 }
