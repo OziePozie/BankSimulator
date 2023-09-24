@@ -10,6 +10,9 @@ const (
 	DOLLARS_TO_RUBLES = 0.1
 	EUROS_TO_RUBLES   = 0.15
 	DOLLARS_TO_EUROS  = 1.1
+	RUBLES_TO_DOLLAR  = 1.1
+	RUBLES_TO_EUROS   = 1.15
+	EUROS_TO_DOLLARS  = 0.9
 )
 
 func (balance Balance) getBalance() map[string]float64 {
@@ -23,15 +26,21 @@ func (balance Balance) getBalance() map[string]float64 {
 	return balances
 }
 
-func (balance Balance) convert(sum float64, switcher int) float64 {
+func (balance Balance) convert(sum float64, currency string) float64 {
 	var res float64
-	switch switcher {
-	case 1:
+	switch currency {
+	case "DOLTOEU":
 		res = sum * DOLLARS_TO_EUROS
-	case 2:
+	case "DOLTORUB":
 		res = sum * DOLLARS_TO_RUBLES
-	case 3:
+	case "EUTORU":
 		res = sum * EUROS_TO_RUBLES
+	case "EUTODOL":
+		res = sum * EUROS_TO_DOLLARS
+	case "RUTOEU":
+		res = sum * RUBLES_TO_EUROS
+	case "RUTODOL":
+		res = sum * RUBLES_TO_DOLLAR
 
 	}
 

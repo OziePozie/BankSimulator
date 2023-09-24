@@ -63,7 +63,7 @@ func (bill Bill) CreateCard() Card {
 			Euros:   0,
 			Rubles:  0,
 		},
-		History:      History{},
+		History:      nil,
 		IsCardActive: true,
 	}
 
