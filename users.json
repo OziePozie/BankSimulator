@@ -1,9 +1,1 @@
-[
-  {
-    "first_name": "tim",
-    "second_name": "sada",
-    "login": "tiem",
-    "password": "1321",
-    "bills": null
-  }
-]
+[{"first_name":"tim","second_name":"sada","login":"tiem","password":"1321","bills":[{"number":"00000000-0000-0000-0000-000000000000","balance":{"Dollars":0,"Euros":0,"Rubles":0},"cards":null,"history":null,"limit":0,"isBillActive":true},{"number":"00000000-0000-0000-0000-000000000000","balance":{"Dollars":0,"Euros":0,"Rubles":0},"cards":null,"history":null,"limit":0,"isBillActive":true}]}]

@@ -67,6 +67,7 @@ func (bill Bill) CreateCard() Card {
 		IsCardActive: true,
 	}
 
+	updateAccountByBill(bill)
 	return card
 }
 

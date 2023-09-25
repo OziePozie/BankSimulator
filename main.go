@@ -17,10 +17,7 @@ func main() {
 	scanner.Scan()
 	switcher := scanner.Text()
 	entryListener(switcher)
-	fmt.Println("Выберите что вы хотите сделать:" +
-		"1. Карты" +
-		"2. Счета" +
-		"3. История")
+
 	mainLogicListener()
 }
 
@@ -42,6 +39,10 @@ func entryListener(switcher string) {
 	}
 }
 func mainLogicListener() {
+	fmt.Println("Выберите что вы хотите сделать:" +
+		"1. Карты" +
+		"2. Счета" +
+		"3. История")
 	scanner.Scan()
 	switcher := scanner.Text()
 	switch switcher {
@@ -114,7 +115,22 @@ func billListener() {
 	case "1":
 		bills := account.Bill
 		for _, bill := range bills {
+
 			cards := bill.Cards
+			if cards == nil {
+				fmt.Println("У вас нет карт, создать ?" +
+					"1. Da" +
+					"2. Net")
+				scanner.Scan()
+				switcherok := scanner.Text()
+				switch switcherok {
+				case "1":
+					account.Bill[0].CreateCard()
+					fallthrough
+				case "2":
+					mainLogicListener()
+				}
+			}
 			for _, card := range cards {
 				fmt.Printf("Номер карты %s, CVV: %s, Дата окончания: %s \n EURO: %.2f \n RUB: %.2f \n DOL: %.2f \n",
 					card.Number, card.Cvv,
@@ -126,11 +142,21 @@ func billListener() {
 	case "2":
 		account.CreateBill()
 	case "3":
-
+	default:
+		mainLogicListener()
 	}
 
 }
 
 func cardListener() {
+
+	scanner.Scan()
+	switcher := scanner.Text()
+	switch switcher {
+	case "1":
+		account.CreateBill()
+	case "2":
+		mainLogicListener()
+	}
 
 }
