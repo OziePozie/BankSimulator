@@ -78,19 +78,20 @@ func (bill Bill) getCards() []Card {
 
 func (bill Bill) closeBill() Bill {
 	bill.IsBillActive = false
-
+	updateAccountByBill(bill)
 	return bill
 }
 
 func (bill Bill) setLimit(limit int) Bill {
 	bill.Limit = limit
+	updateAccountByBill(bill)
 	return bill
 }
 
 func (bill Bill) addHistory(history History) Bill {
 
 	bill.History = append(bill.History, history)
-
+	updateAccountByBill(bill)
 	return bill
 
 }
@@ -99,4 +100,30 @@ func (bill Bill) getBalance() Balance {
 
 	return bill.Balance
 
+}
+
+func updateAccountByBill(bill Bill) {
+
+	accounts := getAccountsFromDataBase()
+
+	flag := false
+
+	for i, acc := range accounts {
+		bills := acc.Bill
+		for _, b := range bills {
+			if b.Number == bill.Number {
+				bills = append(bills, b)
+				acc.Bill = bills
+				accounts[i] = acc
+				flag = true
+				break
+			}
+		}
+	}
+	if !flag {
+		for _, account := range accounts {
+			saveAccountToFile(account)
+		}
+
+	}
 }
