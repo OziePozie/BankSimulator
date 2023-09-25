@@ -1,6 +1,7 @@
 package Components
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"math/rand"
 	"strconv"
@@ -66,7 +67,8 @@ func (bill Bill) CreateCard() Card {
 		History:      nil,
 		IsCardActive: true,
 	}
-
+	bill.Cards = append(bill.Cards, card)
+	fmt.Println(bill.Cards)
 	updateAccountByBill(bill)
 	return card
 }
@@ -111,9 +113,10 @@ func updateAccountByBill(bill Bill) {
 
 	for i, acc := range accounts {
 		bills := acc.Bill
-		for _, b := range bills {
+		for j, b := range bills {
 			if b.Number == bill.Number {
-				bills = append(bills, b)
+				bills = append(bills[:j], bills[j+1:]...)
+				bills = append(bills, bill)
 				acc.Bill = bills
 				accounts[i] = acc
 				flag = true
@@ -121,7 +124,7 @@ func updateAccountByBill(bill Bill) {
 			}
 		}
 	}
-	if !flag {
+	if flag {
 		for _, account := range accounts {
 			saveAccountToFile(account)
 		}

@@ -83,7 +83,7 @@ func updateAccountByCard(card Card) {
 		}
 	}
 
-	if !flag {
+	if flag {
 		for _, account := range accounts {
 			saveAccountToFile(account)
 		}

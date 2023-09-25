@@ -113,11 +113,24 @@ func billListener() {
 	switcher := scanner.Text()
 	switch switcher {
 	case "1":
+		flag := false
 		bills := account.Bill
 		for _, bill := range bills {
 
 			cards := bill.Cards
-			if cards == nil {
+			if cards != nil {
+				flag = true
+				break
+
+			}
+			if flag {
+				for _, card := range cards {
+					fmt.Printf("Номер карты %s, CVV: %s, Дата окончания: %s \n EURO: %.2f \n RUB: %.2f \n DOL: %.2f \n",
+						card.Number, card.Cvv,
+						card.ExpirationDate, card.Balance.Euros,
+						card.Balance.Rubles, card.Balance.Dollars)
+				}
+			} else {
 				fmt.Println("У вас нет карт, создать ?" +
 					"1. Da" +
 					"2. Net")
@@ -130,12 +143,7 @@ func billListener() {
 				case "2":
 					mainLogicListener()
 				}
-			}
-			for _, card := range cards {
-				fmt.Printf("Номер карты %s, CVV: %s, Дата окончания: %s \n EURO: %.2f \n RUB: %.2f \n DOL: %.2f \n",
-					card.Number, card.Cvv,
-					card.ExpirationDate, card.Balance.Euros,
-					card.Balance.Rubles, card.Balance.Dollars)
+				break
 			}
 		}
 
