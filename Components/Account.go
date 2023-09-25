@@ -63,7 +63,7 @@ func (account Account) updateAccount(login string) {
 
 	_, err := json.Marshal(account)
 	if err != nil {
-		fmt.Println("Произошел Обкак")
+		fmt.Println("Произошел ")
 	}
 
 }
